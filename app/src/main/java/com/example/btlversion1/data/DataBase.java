@@ -80,10 +80,17 @@ public class DataBase extends SQLiteOpenHelper {
         }
         return list;
     }
-    public int deleteItem(int id){
-        String clause = "Id=?";
-        String[] args = {String.valueOf(id)};
+    public boolean deleteTitle(String name)
+    { SQLiteDatabase db=getWritableDatabase();
+        return db.delete("tblTrangchuOne", "title" + "=?", new String[]{name}) > 0;
+    }
+    public int delete(String key){
+        String whereClause="title=?";
+        String[] whereAgrs={String.valueOf(key)};
         SQLiteDatabase st = getWritableDatabase();
-        return st.delete("tblTrangchuOne", clause, args);
+
+        return st.delete("tblTrangchuOne",
+                whereClause,
+                whereAgrs);
     }
 }

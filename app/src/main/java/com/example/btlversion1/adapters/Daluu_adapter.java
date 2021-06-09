@@ -39,7 +39,7 @@ public class Daluu_adapter extends RecyclerView.Adapter<Daluu_adapter.ViewHolder
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.item_layout,parent,false);
+        View view = inflater.inflate(R.layout.item_layout1,parent,false);
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
     }
@@ -69,21 +69,21 @@ public class Daluu_adapter extends RecyclerView.Adapter<Daluu_adapter.ViewHolder
              //   }
             }
         });
-        holder.btnsave.setOnClickListener(new View.OnClickListener() {
+        holder.btnDelete.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 try {
-                    //int id=holder.itemView.getId();\
-                    int id=(position);
-                    //int id = mdaluu.get(position);
-
-                    db.deleteItem(id);
+                    String title=holder.textView.getText().toString();
+                    db.delete(title);
                     Toast.makeText(v.getContext(),"Xoá Thành Công!!" + "", Toast.LENGTH_SHORT).show();
-                }catch (Exception e){Toast.makeText(v.getContext(),"Không Thành Công!!" + "", Toast.LENGTH_SHORT).show();}
+                }
+                catch (NullPointerException ignored){Toast.makeText(v.getContext(),"Không Thành Công!!" + "", Toast.LENGTH_SHORT).show();}
             }
         });
+
     }
+
 
     @Override
     public int getItemCount() {
@@ -94,13 +94,13 @@ public class Daluu_adapter extends RecyclerView.Adapter<Daluu_adapter.ViewHolder
         private ImageView imgview;
         private TextView textView;
         private TextView textViewtime;
-        private ImageView btnsave;
+        private ImageView btnDelete;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             imgview =(ImageView) itemView.findViewById(R.id.img01);
             textView=(TextView) itemView.findViewById(R.id.txtview01);
             textViewtime=(TextView) itemView.findViewById(R.id.txtviewtime);
-            btnsave = (ImageView) itemView.findViewById(R.id.btnsave);
+            btnDelete = (ImageView) itemView.findViewById(R.id.btnDelete);
         }
     }
 }

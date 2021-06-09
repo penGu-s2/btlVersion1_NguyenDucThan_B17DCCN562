@@ -46,7 +46,6 @@ import java.io.FileOutputStream;
 import java.util.Locale;
 
 public class MainActivity2 extends AppCompatActivity {
-    private static final String TAG ="MainActivity2" ;
     private Trangchu trangchu;
     private TextView textViewtitle;
     private ImageView imageView;

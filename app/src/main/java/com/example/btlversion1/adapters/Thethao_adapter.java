@@ -1,5 +1,6 @@
 package com.example.btlversion1.adapters;
 
+import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -7,12 +8,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.btlversion1.MainActivity2;
 import com.example.btlversion1.R;
+import com.example.btlversion1.data.DataBase;
+import com.example.btlversion1.data.models.Daluu;
 import com.example.btlversion1.data.models.Thethao;
 import com.squareup.picasso.Picasso;
 
@@ -21,6 +27,9 @@ import java.util.ArrayList;
 public class Thethao_adapter extends RecyclerView.Adapter<Thethao_adapter.ViewHolder> {
     private Context context;
     private ArrayList<Thethao> mthethao;
+    private DataBase db;
+    private NotificationManagerCompat notificationManagerCompat;
+    private static final String CHANNEL_1_ID = "channel1";
 
     public Thethao_adapter(Context context, ArrayList<Thethao> mthethao) {
         this.context = context;
@@ -38,10 +47,12 @@ public class Thethao_adapter extends RecyclerView.Adapter<Thethao_adapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        notificationManagerCompat = NotificationManagerCompat.from(context);
         final Thethao thethao = mthethao.get(position);
         if(!thethao.img.equals("")){
             Picasso.with(context).load(thethao.img).into(holder.imgview);
         }
+        db=new DataBase(context);
         holder.textView.setText(thethao.title);
         holder.textViewtime.setText(thethao.getTime());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -51,6 +62,44 @@ public class Thethao_adapter extends RecyclerView.Adapter<Thethao_adapter.ViewHo
                 intent.putExtra("URL",thethao.getLink());
                 context.startActivity(intent);
             }
+        });
+        holder.btnsave.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                try{
+                    sendOnChannel();
+                    String ten = thethao.title;
+                    String img =thethao.img;
+                    String link = thethao.link;
+                    String time = thethao.time;
+
+                    Daluu daLuu=new Daluu(ten,img,link,time);
+                    db.addTinTuc(daLuu);
+                    Toast.makeText(v.getContext(),"Lưu Thành Công!!" + "", Toast.LENGTH_SHORT).show();
+
+
+                }catch(Exception e){
+                    Toast.makeText(v.getContext(),"Lưu thất bại!!" + "", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            private void sendOnChannel() {
+                String title=thethao.title;
+                String message=thethao.link;
+                Notification notification= new
+                        NotificationCompat.Builder(context,CHANNEL_1_ID)
+                        .setSmallIcon(R.drawable.save)
+                        .setContentTitle(title)
+                        .setContentText(message)
+                        .setPriority(NotificationCompat.PRIORITY_LOW)
+                        .setCategory(NotificationCompat.CATEGORY_PROMO)
+                        .build();
+                int notificationId = 1;
+                notificationManagerCompat.notify(notificationId,
+                        notification);
+            }
+
         });
     }
 
@@ -63,11 +112,13 @@ public class Thethao_adapter extends RecyclerView.Adapter<Thethao_adapter.ViewHo
         private ImageView imgview;
         private TextView textView;
         private TextView textViewtime;
+        private ImageView btnsave;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             imgview =(ImageView) itemView.findViewById(R.id.img01);
             textView=(TextView) itemView.findViewById(R.id.txtview01);
             textViewtime=(TextView) itemView.findViewById(R.id.txtviewtime);
+            btnsave = (ImageView) itemView.findViewById(R.id.btnsave);
         }
     }
 }
