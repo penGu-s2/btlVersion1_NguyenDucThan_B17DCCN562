@@ -73,16 +73,15 @@ public class CongngheFragment extends Fragment {
                     if(matcher.find()){
                         img= matcher.group(1);
                     }
-                    Log.d(TAG,"data thethao::::  " +"   _+_+_+   "+img);
+                    Log.d(TAG,"data congnghe::::  " +"   _+_+_+   "+img);
                     link = rssItems.get(i).getLink();
                     time = rssItems.get(i).getPubDate();
                     congngheArrayList.add(new Congnghe(title,img,link,time));
                 }
-                Log.d("testt::: ","aaaaaaaaaaaaaaaaaaa   Thethao");
+                Log.d("testt::: ","aaaaaaaaaaaaaaaaaaa   CongNge");
                 adapter = new Congnghe_adapter(getActivity(),congngheArrayList);
                 recyclerView.setAdapter(adapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-               // Log.d(TAG,"data end::::  Thethao "+thethaoArrayList.size()+"  ++= ++   "+img);
             }
 
             @Override
