@@ -3,6 +3,7 @@ package com.example.btlversion1.data.models;
 import java.io.Serializable;
 
 public class Daluu implements Serializable {
+    public int id;
     public String title;
     public String img;
     public String link;
@@ -11,12 +12,32 @@ public class Daluu implements Serializable {
     public Daluu() {
     }
 
+    public Daluu(int id, String title, String img, String link, String time) {
+        this.id = id;
+        this.title = title;
+        this.img = img;
+        this.link = link;
+        this.time = time;
+    }
+
     public Daluu(String title, String img, String link, String time) {
         this.title = title;
         this.img = img;
         this.link = link;
         this.time = time;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+
+
+
 
     public String getTitle() {
         return title;

@@ -25,7 +25,7 @@ public class DataBase extends SQLiteOpenHelper {
         String sql="CREATE TABLE IF Not Exists tblTrangchuOne(" +
                 "Id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "title TEXT," +
-                "img NVARCHART(500)," +
+                "img TEXT," +
                 "LinK TEXT," +
                 "time TEXT," +
                 "noidung TEXT)";
@@ -80,17 +80,9 @@ public class DataBase extends SQLiteOpenHelper {
         }
         return list;
     }
-    public boolean deleteTitle(String name)
-    { SQLiteDatabase db=getWritableDatabase();
-        return db.delete("tblTrangchuOne", "title" + "=?", new String[]{name}) > 0;
-    }
-    public int delete(String key){
-        String whereClause="title=?";
-        String[] whereAgrs={String.valueOf(key)};
-        SQLiteDatabase st = getWritableDatabase();
-
-        return st.delete("tblTrangchuOne",
-                whereClause,
-                whereAgrs);
+    public void delete(int id){
+        SQLiteDatabase st=this.getWritableDatabase();
+        String query="DELETE FROM tblTrangchuOne WHERE Id='"+id+"'";
+        st.execSQL(query);
     }
 }

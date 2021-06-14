@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,44 +48,59 @@ public class Daluu_adapter extends RecyclerView.Adapter<Daluu_adapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder,final int position) {
 
+        db=new DataBase(context);
         final Daluu daLuu = mdaluu.get(position);
 
         if(!daLuu.img.equals("")){
             Picasso.with(context).load(daLuu.img).into(holder.imgview);
         }
-        db=new DataBase(context);
         holder.textView.setText(daLuu.getTitle());
         holder.textViewtime.setText(daLuu.getTime());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            //    try {
+             try {
                 String link=daLuu.link;
                     Intent intent = new Intent(v.getContext(), MainActivity2.class);
                     intent.putExtra("URL",link);
                 v.getContext().startActivity(intent);
-              //  }
-             //   catch (Exception e){
-             //       Toast.makeText(v.getContext(),"Không Thành Công!!" + "", Toast.LENGTH_SHORT).show();
-             //   }
+               }
+                catch (Exception e){
+                   Toast.makeText(v.getContext(),"Không Thành Công!!" + "", Toast.LENGTH_SHORT).show();
+                }
             }
         });
+      /*  holder.btnDelete.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                try {
+                    String title=daLuu.title;
+                    db.deleteTitle(title);
+                    Toast.makeText(v.getContext(),"Xoá Thành Công!!" + "", Toast.LENGTH_SHORT).show();
+                }
+                catch (NumberFormatException ex){Toast.makeText(v.getContext(),"Không Thành Công!!" + "", Toast.LENGTH_SHORT).show();}
+            }
+        });*/
         holder.btnDelete.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 try {
-                    String title=holder.textView.getText().toString();
-                    db.delete(title);
+               db.delete(position+1);
+               mdaluu.remove(position);
                     Toast.makeText(v.getContext(),"Xoá Thành Công!!" + "", Toast.LENGTH_SHORT).show();
-                }
-                catch (NullPointerException ignored){Toast.makeText(v.getContext(),"Không Thành Công!!" + "", Toast.LENGTH_SHORT).show();}
+                    }
+                catch (NullPointerException ex){Toast.makeText(v.getContext(),"Không Thành Công!!" + "", Toast.LENGTH_SHORT).show();}
+
             }
         });
-
     }
 
 
+    public long getItemId(int position) {
+        return position;
+    }
     @Override
     public int getItemCount() {
         return mdaluu.size();
